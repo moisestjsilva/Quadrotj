@@ -29,6 +29,7 @@ if os.path.exists("uploads"):
             selected_pdf = st.selectbox("Escolha um PDF", pdf_files)
             if selected_pdf:
                 file_path = os.path.join("uploads", selected_category, selected_pdf)
-                # Mostrar o PDF na maior resolução possível
-                st.markdown(f'<embed src="{file_path}" width="700" height="1000"></embed>', unsafe_allow_html=True)
+                # Mostrar o PDF usando st.image
+                with open(file_path, "rb") as f:
+                    st.image(f, caption=selected_pdf, use_column_width=True)
                 st.download_button(label="Baixar PDF", data=file_path, file_name=selected_pdf, mime="application/pdf")
