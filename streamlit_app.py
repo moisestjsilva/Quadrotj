@@ -29,7 +29,5 @@ if os.path.exists("uploads"):
             selected_pdf = st.selectbox("Escolha um PDF", pdf_files)
             if selected_pdf:
                 file_path = os.path.join("uploads", selected_category, selected_pdf)
-                # Mostrar o PDF usando st.image
-                with open(file_path, "rb") as f:
-                    st.image(f, caption=selected_pdf, use_column_width=True)
+                st.write(f"Visualizando PDF: [{selected_pdf}]({file_path})")
                 st.download_button(label="Baixar PDF", data=file_path, file_name=selected_pdf, mime="application/pdf")
