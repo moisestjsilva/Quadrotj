@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import base64
 
 # Função para salvar o arquivo PDF no diretório correspondente
 def save_uploaded_file(uploaded_file, category):
