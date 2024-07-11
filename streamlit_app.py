@@ -1,14 +1,14 @@
 import streamlit as st
-from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfReader
 import io
 
 # Função para exibir o PDF
 def display_pdf(file):
     with io.BytesIO(file.read()) as f:
-        pdf = PdfFileReader(f)
-        st.write(f"Total de páginas: {pdf.getNumPages()}")
+        pdf = PdfReader(f)
+        st.write(f"Total de páginas: {len(pdf.pages)}")
         st.write("Exibindo a primeira página do PDF:")
-        st.write(f"Conteúdo da primeira página: {pdf.getPage(0).extractText()}")
+        st.write(f"Conteúdo da primeira página: {pdf.pages[0].extract_text()}")
 
 # Título da aplicação
 st.title("Upload e Categorização de PDFs")
