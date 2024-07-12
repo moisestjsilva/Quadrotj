@@ -9,6 +9,13 @@ def save_uploaded_file(uploaded_file, category):
         f.write(uploaded_file.getbuffer())
     return os.path.join("uploads", category, uploaded_file.name)
 
+# Função para exibir o PDF
+def display_pdf(file_path):
+    with open(file_path, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
 # Título da aplicação
 st.title("Upload e Categorização de PDFs")
 
@@ -30,9 +37,6 @@ if os.path.exists("uploads"):
             selected_pdf = st.selectbox("Escolha um PDF", pdf_files)
             if selected_pdf:
                 file_path = os.path.join("uploads", selected_category, selected_pdf)
-                # Mostrar o PDF embutido na página
-                with open(file_path, "rb") as f:
-                    base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-                pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
-                st.markdown(pdf_display, unsafe_allow_html=True)
+                # Mostrar o PDF usando o visualizador embutido
+                display_pdf(file_path)
                 st.download_button(label="Baixar PDF", data=open(file_path, "rb").read(), file_name=selected_pdf, mime="application/pdf")
