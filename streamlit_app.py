@@ -29,5 +29,9 @@ if os.path.exists("uploads"):
             selected_pdf = st.selectbox("Escolha um PDF", pdf_files)
             if selected_pdf:
                 file_path = os.path.join("uploads", selected_category, selected_pdf)
-                st.write(f"Visualizando PDF: [{selected_pdf}]({file_path})")
-                st.download_button(label="Baixar PDF", data=file_path, file_name=selected_pdf, mime="application/pdf")
+                # Mostrar o PDF embutido na página
+                with open(file_path, "rb") as f:
+                    base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+                pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
+                st.markdown(pdf_display, unsafe_allow_html=True)
+                st.download_button(label="Baixar PDF", data=open(file_path, "rb").read(), file_name=selected_pdf, mime="application/pdf")
