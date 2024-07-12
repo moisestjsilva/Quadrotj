@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+from pdf2image import convert_from_path
+from PIL import Image
 
 # Função para salvar o arquivo PDF no diretório correspondente
 def save_uploaded_file(uploaded_file, category):
@@ -7,6 +9,12 @@ def save_uploaded_file(uploaded_file, category):
     with open(os.path.join("uploads", category, uploaded_file.name), "wb") as f:
         f.write(uploaded_file.getbuffer())
     return os.path.join("uploads", category, uploaded_file.name)
+
+# Função para exibir o PDF
+def display_pdf_as_images(file_path):
+    images = convert_from_path(file_path)
+    for img in images:
+        st.image(img)
 
 # Título da aplicação
 st.title("Upload e Categorização de PDFs")
@@ -29,6 +37,6 @@ if os.path.exists("uploads"):
             selected_pdf = st.selectbox("Escolha um PDF", pdf_files)
             if selected_pdf:
                 file_path = os.path.join("uploads", selected_category, selected_pdf)
-                # Mostrar o PDF usando o visualizador embutido
-                st.components.v1.iframe(f"file://{file_path}", width=700, height=1000)
+                # Mostrar o PDF convertido em imagens
+                display_pdf_as_images(file_path)
                 st.download_button(label="Baixar PDF", data=open(file_path, "rb").read(), file_name=selected_pdf, mime="application/pdf")
